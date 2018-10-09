@@ -539,7 +539,7 @@ if(false) {}
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! E:\dop\S\P\full_stack\mongo_new2\angular\src\styles.css */"./src/styles.css");
+module.exports = __webpack_require__(/*! E:\dop\S\P\full_stack\1.login_mean\angular\src\styles.css */"./src/styles.css");
 
 
 /***/ })

@@ -127,8 +127,25 @@ router.post('/deleted',function(req,res){
 
 
 router.post('/passchange',function(req,res){
-    const oldp=req.body.oldpass;
-    console.log(oldp);
+    
+        username=req.body.username;
+        password1=req.body.password1;  
+    const nuser={
+        username:username,
+        password:password1
+      }
+     
+      User.updatepass(nuser,function(err){
+          if(err){
+              res.json({"success":flase,"msg":"Error Occured."});
+          }
+          else{
+            res.json({"success":true,"msg":"Password changed successfully"});
+          }
+      });
+
+
+     
 
 });
 

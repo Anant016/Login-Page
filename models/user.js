@@ -43,7 +43,7 @@ module.exports.addUser=function(newUser,callback){
 
     bcrypt.genSalt(10,function(err,salt){
         if(err){throw err;
-               console.log(error);};
+            }
       bcrypt.hash(newUser.password,salt,function(err,hash){
           if(err) throw err;
           newUser.password=hash;
@@ -55,10 +55,27 @@ module.exports.addUser=function(newUser,callback){
 
 module.exports.comparePassword= function(candidatePassword,hash,callback){
     bcrypt.compare(candidatePassword,hash, function(err,isMatch){
-        if(err)throw err;
+        if(err) throw err;
         callback(null,isMatch)
     });
   }
+
+
+
+  module.exports.updatepass = function(nuser,callback){
+    bcrypt.genSalt(10,function(err,salt){
+        if(err){throw err;
+            }
+      bcrypt.hash(nuser.password,salt,function(err,hash){
+          if(err) throw err;
+          User.updateOne({username:nuser.username},{password:hash},callback);
+            
+        });
+    });
+       
+    
+  }
+
 
 
     module.exports.delUser=function(username,callback){

@@ -625,7 +625,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"user\">\n    <form (submit)=\"changePass()\">\n      <label class=\"label\">Old Password:</label><input [(ngModel)]=\"oldpass\" name=\"oldpass\" type=\"password\" autofocus>\n      <br>\n      <label class=\"label\">New Password:</label><input [(ngModel)]=\"password1\" name=\"password1\" type=\"password\" >\n      <br>\n      <label class=\"label\">Confirm Password:</label><input [(ngModel)]=\"password2\" name=\"password2\" type=\"password\">\n      <br>\n      <input type=\"submit\" class=\"btn\" value=\"Confirm\">\n    </form>\n  </div>"
+module.exports = "<div *ngIf=\"user\">\n    <form (submit)=\"changePass()\">\n        <label class=\"label\">User name:</label><input [(ngModel)]=\"username\" name=\"username\" type=\"text\" autofocus>\n        <br>\n      <label class=\"label\">Old Password:</label><input [(ngModel)]=\"password\" name=\"password\" type=\"password\" autofocus>\n      <br>\n      <label class=\"label\">New Password:</label><input [(ngModel)]=\"password1\" name=\"password1\" type=\"password\" >\n      <br>\n      <label class=\"label\">Confirm Password:</label><input [(ngModel)]=\"password2\" name=\"password2\" type=\"password\">\n      <br>\n      <input type=\"submit\" class=\"btn\" value=\"Confirm\">\n    </form>\n  </div>"
 
 /***/ }),
 
@@ -644,6 +644,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var angular2_flash_messages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angular2-flash-messages */ "./node_modules/angular2-flash-messages/module/index.js");
 /* harmony import */ var angular2_flash_messages__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angular2_flash_messages__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _services_validate_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/validate.service */ "./src/app/services/validate.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -657,11 +658,13 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var PasschangeComponent = /** @class */ (function () {
-    function PasschangeComponent(authService, flashMessages, router) {
+    function PasschangeComponent(authService, flashMessages, router, validateService) {
         this.authService = authService;
         this.flashMessages = flashMessages;
         this.router = router;
+        this.validateService = validateService;
     }
     PasschangeComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -674,16 +677,43 @@ var PasschangeComponent = /** @class */ (function () {
         });
     };
     PasschangeComponent.prototype.changePass = function () {
+        var _this = this;
         //first check old pass(compare)(authenticate/register)
-        var oldp = this.oldpass;
-        this.authService.checkOldp(oldp).subscribe(function (data) {
+        var user = {
+            username: this.username,
+            password: this.password,
+            password1: this.password1,
+            password2: this.password2
+        };
+        if (!this.validateService.validateLogin(user)) {
+            this.flashMessages.show('Please fill all the required fiels.', { cssClass: 'alert-danger', timeout: 3000 });
+            return false;
+        }
+        this.authService.authenticateUser(user).subscribe(function (data) {
             if (data.success) {
+                //then check if pass1==pass2
+                if (user.password1 == user.password2) {
+                    // both T, then replace database pass from pass1(2) 
+                    _this.authService.changePass(user).subscribe(function (data) {
+                        if (data.success) {
+                            _this.flashMessages.show(data.msg, { cssClass: 'alert-success', timeout: 3000 });
+                            _this.router.navigate(['login']);
+                            _this.authService.logout();
+                        }
+                        else {
+                            _this.flashMessages.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });
+                        }
+                    });
+                }
+                else {
+                    _this.flashMessages.show('Password does not matches.', { cssClass: 'alert-danger', timeout: 2500 });
+                    return false;
+                }
             }
             else {
+                _this.flashMessages.show("Fill correct username or password.", { cssClass: "alert-danger", timeout: 5000 });
             }
         });
-        //then check if pass1==pass2
-        //if both T, then replace database pass from pass1(2)  
     };
     PasschangeComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -693,7 +723,8 @@ var PasschangeComponent = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [_services_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"],
             angular2_flash_messages__WEBPACK_IMPORTED_MODULE_2__["FlashMessagesService"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
+            _services_validate_service__WEBPACK_IMPORTED_MODULE_4__["ValidateService"]])
     ], PasschangeComponent);
     return PasschangeComponent;
 }());
@@ -1070,11 +1101,11 @@ var AuthService = /** @class */ (function () {
         return this.http.post('users/deleted', user, { headers: headers })
             .map(function (res) { return res.json(); });
     };
-    AuthService.prototype.checkOldp = function (oldpass) {
+    AuthService.prototype.changePass = function (user) {
         var headers = new _angular_http__WEBPACK_IMPORTED_MODULE_1__["Headers"]();
         console.log('InAuthService');
         headers.append('Content-Type', 'application/json');
-        return this.http.post('users/passchange', oldpass, { headers: headers })
+        return this.http.post('users/passchange', user, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService = __decorate([
@@ -1244,7 +1275,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! E:\dop\S\P\full_stack\mongo_new2\angular\src\main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! E:\dop\S\P\full_stack\1.login_mean\angular\src\main.ts */"./src/main.ts");
 
 
 /***/ })
