@@ -27,6 +27,19 @@ router.post('/register',function(req,res){
     {
        if(err) throw err;
         if(!user){
+           const output=`
+<b>You've been registered succesfully.</b>
+<h>Contact Detaile:
+</h>
+<ul>
+   <li>Name: ${newUser.name}
+   </li>
+<li>Email: ${newUser.email}
+   </li>
+<li>Username: ${newUser.username}
+   </li>
+</ul>
+`;
            User.addUser(newUser,function(err,user){
            if(err){
             res.json({success:false,msg:'Something went wrong.'});
@@ -55,10 +68,10 @@ tls:{
     // setup email data with unicode symbols
     let mailOptions = {
         from: '"Anant Rungta" <romedy65i@gmail.com>', // sender address
-        to: `anantrungta1999@gmail.com,{{user.email}}`, // list of receivers
+        to: `${newUser.email}`, // list of receivers
         subject: 'Registered Successfully', // Subject line
         text: "You've been registered succesfully.", // plain text body
-        html: '<b>Hello world?</b>' // html body
+        html: output // html body
     };
 
     // send mail with defined transport object
