@@ -41,21 +41,23 @@ router.post('/register',function(req,res){
                 // create reusable transporter object using the default SMTP transport
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com.',
-    port: 587,
+    port: 465,
     auth: {
-        user: 'anantrungta1999@gmail.com',
-        pass: 'coolhacks_12'
+        user: 'romedy65i@gmail.com',
+        pass: 'Anu@123456'
     },
-
+tls:{
+    rejectUnauthorized:false
+}
 });
 
 
     // setup email data with unicode symbols
     let mailOptions = {
-        from: '"Anant Rungta" <anantrungta1999@gmail.com>', // sender address
-        to: `romedy65i@gmail.com,{{user.email}}`, // list of receivers
-        subject: 'Hello ✔', // Subject line
-        text: 'Hello world?', // plain text body
+        from: '"Anant Rungta" <romedy65i@gmail.com>', // sender address
+        to: `anantrungta1999@gmail.com,{{user.email}}`, // list of receivers
+        subject: 'Registered Successfully', // Subject line
+        text: "You've been registered succesfully.", // plain text body
         html: '<b>Hello world?</b>' // html body
     };
 
