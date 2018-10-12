@@ -377,7 +377,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"jumbotron text-center\">\n    <h1 class=\"lead \" style=\"font-size: 60px\" >Anant Rungta</h1>\n    <p class=\"lead\">Welcome to my site<small> -this is Anant Rungta</small></p><br>\n    <div>\n      <a class=\"btn btn-primary\" [routerLink]=\"['/register']\">Register</a>\n      <a class=\"btn btn-primary\" [routerLink]=\"['/login']\">Login</a>\n    </div>\n  </div>\n\n\n  <div id=\"1\" class=\"fixed-bottom alert alert-dismissible fade show\" style=\"background-color: black; border-radius: 0px\">\n      <div style=\"color: white\" class=\"row\">\n          <div class=\"col ml-4 mb-3 mt-2\">\n              This websites place cookies on your device to give you the best user experience. By using our websites, you agree to the placement of these cookies. To learn more, read our<br> <a href=\"#\"><u>Privacy Policy.</u></a>\n          </div><!-- col1-->\n          <div class=\"col-6 col-sm-4 col-md-4 col-lg-3 col align-self-center align-content-right \">\n              <button id=\"b\" type=\"button\" (click)=\"alert()\" class=\"btn btn-light\" style=\"border-radius: 0px\" dta-dismiss=\"alert\"><b>Accept and Close</b></button>\n          </div><!-- col2-->\n      </div><!-- row-->\n  </div>\n\n"
+module.exports = "<div class=\"jumbotron text-center\">\n    <h1 class=\"lead \" style=\"font-size: 60px\" >Anant Rungta</h1>\n    <p class=\"lead\">Welcome to my site<small> -this is Anant Rungta</small></p><br>\n    <div>\n      <a class=\"btn btn-primary\" [routerLink]=\"['/register']\">Register</a>\n      <a class=\"btn btn-primary\" [routerLink]=\"['/login']\">Login</a>\n    </div>\n  </div>\n\n  <style>\n    @media screen and (max-width: 400px) {\n      #accept { display: none; }   /* till 400px */\n    }\n  </style>\n\n  <div id=\"accept\" class=\"fixed-bottom alert alert-dismissible fade show\" style=\"background-color: black; border-radius: 0px\">\n      <div style=\"color: white\" class=\"row\">\n          <div class=\"col ml-4 mb-3 mt-2\">\n              This websites place cookies on your device to give you the best user experience. By using our websites, you agree to the placement of these cookies. To learn more, read our<br> <a href=\"#\"><u>Privacy Policy.</u></a>\n          </div><!-- col1-->\n          <div class=\"col-6 col-sm-4 col-md-4 col-lg-3 col align-self-center align-content-right \">\n              <button id=\"b\" type=\"button\" (click)=\"alert()\" class=\"btn btn-light\" style=\"border-radius: 0px\" dta-dismiss=\"alert\"><b>Accept and Close</b></button>\n          </div><!-- col2-->\n      </div><!-- row-->\n  </div>\n\n"
 
 /***/ }),
 
@@ -408,7 +408,7 @@ var HomeComponent = /** @class */ (function () {
     HomeComponent.prototype.ngOnInit = function () {
     };
     HomeComponent.prototype.alert = function () {
-        var bar = document.getElementById('1');
+        var bar = document.getElementById('accept');
         bar.style.display = 'none';
     };
     HomeComponent = __decorate([
