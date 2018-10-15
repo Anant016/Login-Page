@@ -1134,6 +1134,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var angular2_flash_messages__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! angular2-flash-messages */ "./node_modules/angular2-flash-messages/module/index.js");
 /* harmony import */ var angular2_flash_messages__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(angular2_flash_messages__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1145,9 +1146,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var ValidateService = /** @class */ (function () {
-    function ValidateService(flashMessages) {
+    function ValidateService(flashMessages, router) {
         this.flashMessages = flashMessages;
+        this.router = router;
         this.pass = true;
     }
     //Validate Register
@@ -1161,9 +1164,15 @@ var ValidateService = /** @class */ (function () {
     };
     //CheckPassword Stregth
     ValidateService.prototype.passStrength = function (password) {
-        if (password.length < 8) {
-            this.flashMessages.show('Password Must Contain atleast 8 characters.', { cssClass: 'alert-danger', timeout: 6000 });
-            this.pass = false;
+        this.pass = true;
+        if (password == undefined) {
+            console.log('waiting');
+        }
+        else {
+            if (password.length < 8) {
+                this.flashMessages.show('Password Must Contain atleast 8 characters.', { cssClass: 'alert-danger', timeout: 6000 });
+                this.pass = false;
+            }
         }
         if (!/[A-Z]/.test(password)) {
             this.flashMessages.show('Password must contain one capital letter.', { cssClass: 'alert-danger', timeout: 6000 });
@@ -1205,7 +1214,8 @@ var ValidateService = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
             providedIn: 'root'
         }),
-        __metadata("design:paramtypes", [angular2_flash_messages__WEBPACK_IMPORTED_MODULE_1__["FlashMessagesService"]])
+        __metadata("design:paramtypes", [angular2_flash_messages__WEBPACK_IMPORTED_MODULE_1__["FlashMessagesService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
     ], ValidateService);
     return ValidateService;
 }());

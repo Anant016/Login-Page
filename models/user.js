@@ -12,7 +12,8 @@ const UserSchema=mongoose.Schema({
    } ,
     email:{
         type:String,
-        required:true
+        required:true,
+        unique:true
    },
     username:{
         type:String,
@@ -69,11 +70,11 @@ module.exports.comparePassword= function(candidatePassword,hash,callback){
       bcrypt.hash(nuser.password,salt,function(err,hash){
           if(err) throw err;
           User.updateOne({username:nuser.username},{password:hash},callback);
-            
+
         });
     });
-       
-    
+
+
   }
 
 

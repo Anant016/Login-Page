@@ -29,7 +29,7 @@ router.post('/register',function(req,res){
         if(!user){
            const output=`
 <b>You've been registered succesfully.</b>
-<h>Contact Details:
+<br><h>Contact Details:
 </h>
 <ul>
    <li>Name: ${newUser.name}
