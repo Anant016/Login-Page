@@ -11,6 +11,10 @@ const nodemailer = require('nodemailer');
 const JwtStrategy=require('passport-jwt').Strategy;
 const ExtractJwt=require('passport-jwt').ExtractJwt;
 
+var download = require('download-file')
+
+var fs = require("fs");
+
 
 /*router.get('/register',function(req,res){
     res.render('regist');
@@ -28,18 +32,18 @@ router.post('/register',function(req,res){
        if(err) throw err;
         if(!user){
            const output=`
-<b>You've been registered succesfully.</b>
-<br><h>Contact Details:
-</h>
-<ul>
-   <li>Name: ${newUser.name}
-   </li>
-<li>Email: ${newUser.email}
-   </li>
-<li>Username: ${newUser.username}
-   </li>
-</ul>
-`;
+                        <b>You've been registered succesfully.</b>
+                        <br><h>Contact Details:
+                        </h>
+                        <ul>
+                        <li>Name: ${newUser.name}
+                        </li>
+                        <li>Email: ${newUser.email}
+                        </li>
+                        <li>Username: ${newUser.username}
+                        </li>
+                        </ul>
+                        `;
            User.addUser(newUser,function(err,user){
            if(err){
             res.json({success:false,msg:'Something went wrong.'});
@@ -195,10 +199,27 @@ router.post('/passchange',function(req,res){
             res.json({"success":true,"msg":"Password changed successfully"});
           }
       });
+});
 
+router.get('/download',function(req,res){
+    var url = "http://i.imgur.com/G9bDaPH.jpg"
+ 
+        var options = {
+            directory: "C:/Users/anant/Downloads/images/cats/",
+            filename: "cat.gif"
+        }
 
-
-
+        download(url, options, function(err){
+            if (err) throw err
+            console.log("meow")
+        });
+    fs.writeFile("about.html", "About", function(err) {
+        if (err) {
+            res.json({"success":flase,"msg":"Error Downloading File."});
+        }
+        res.json({"success":true,"msg":"File Downloaded."});
+    }); 
+    
 });
 
 
